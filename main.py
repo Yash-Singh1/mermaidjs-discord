@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import os
 import base64
+import keep_alive
 
 client = commands.Bot(command_prefix=commands.when_mentioned_or(("!mermaid-")))
 
@@ -38,5 +39,7 @@ async def invite(ctx):
 @client.command()
 async def support(ctx):
   await ctx.send(embed=discord.Embed(description="The link to the issue tracker is https://github.com/Yash-Singh1/mermaidjs-discord/issues", color=4372867))
+
+keep_alive.keep_alive()
 
 client.run(os.environ['TOKEN'])

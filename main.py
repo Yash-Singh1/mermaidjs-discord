@@ -3,6 +3,8 @@ from discord.ext import commands
 import os
 import base64
 import keep_alive
+from replit import db
+import json
 
 client = commands.Bot(command_prefix=commands.when_mentioned_or(("!mermaid-")))
 
@@ -16,7 +18,12 @@ async def helpCommand(ctx):
   embed = discord.Embed(description="Help on using the Mermaid.js Discord Bot.", color=4372867)
   embed.set_author(name="Help")
   embed.add_field(name="Helpful Links", value="[GitHub](https://github.com/Yash-Singh1/mermaidjs-discord) | [Issue Tracker](https://github.com/Yash-Singh1/mermaidjs-discord/issues) | [Mermaid.js Documentation](https://mermaid-js.github.io/)", inline=False)
-  embed.add_field(name="Commands", value="__!mermaid-help__: Displays the current message.\n__!mermaid-r__ or __!mermaid-render__: Renders the diagram with the code following the command. Allows Mermaid.js diagram syntax.\n__!mermaid-invite__: Gets the invite link of the bot.\n__!mermaid-support__: Gets a link to a support issue tracker for the bot.", inline=False)
+  embed.add_field(name="Commands", value="__!mermaid-help__: Displays the current message.\n\
+__!mermaid-r__ or __!mermaid-render__: Renders the diagram with the code following the command. Allows Mermaid.js diagram syntax.\n\
+__!mermaid-invite__: Gets the invite link of the bot.\n\
+__!mermaid-support__: Gets a link to a support issue tracker for the bot.\n\
+__!mermaid-setTheme__: Sets the theme to use for the diagrams rendered for the user.\n\
+__!mermaid-getTheme__: Gets the currently set theme for the user.", inline=False)
   embed.add_field(name="Example Diagram", value="""
 ```markdown
 !mermaid-render
@@ -42,7 +49,10 @@ async def help(ctx):
 
 @client.command(aliases=['r'])
 async def render(ctx, *, arg):
-  await ctx.message.reply('https://mermaid.ink/img/' + base64.b64encode(arg.encode('ascii')).decode('ascii'))
+  if (ctx.message.author.mention + "#" + str(ctx.message.author.id)) in db.keys():
+    await ctx.message.reply('https://mermaid.ink/img/' + base64.b64encode(json.dumps({ 'mermaid': {'theme': db[ctx.message.author.mention + "#" + str(ctx.message.author.id)]}, 'code': arg }).encode('ascii')).decode('ascii') + ("?bgColor=333" if db[ctx.message.author.mention + "#" + str(ctx.message.author.id)] == 'dark' else ""))
+  else:
+    await ctx.message.reply('https://mermaid.ink/img/' + base64.b64encode(arg.encode('ascii')).decode('ascii'))
 
 @client.command()
 async def invite(ctx):
@@ -51,6 +61,22 @@ async def invite(ctx):
 @client.command()
 async def support(ctx):
   await ctx.send(embed=discord.Embed(description="The link to the issue tracker is https://github.com/Yash-Singh1/mermaidjs-discord/issues", color=4372867))
+
+@client.command()
+async def setTheme(ctx, theme = ''):
+  if not(theme):
+    await ctx.send("A theme must be specified from one of default and dark for this command to work")
+  elif theme != "dark" and theme != "default":
+    await ctx.send("Theme must be \"default\" or \"dark\"")
+  else:
+    db[ctx.message.author.mention + "#" + str(ctx.message.author.id)] = theme
+
+@client.command()
+async def getTheme(ctx):
+  if (ctx.message.author.mention + "#" + str(ctx.message.author.id)) in db.keys():
+    await ctx.send(db[ctx.message.author.mention + "#" + str(ctx.message.author.id)])
+  else:
+    await ctx.send("default")
 
 keep_alive.keep_alive()
 

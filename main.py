@@ -70,6 +70,7 @@ async def setTheme(ctx, theme = ''):
     await ctx.send("Theme must be \"default\" or \"dark\"")
   else:
     db[ctx.message.author.mention + "#" + str(ctx.message.author.id)] = theme
+    await ctx.send("Theme successfully set to " + theme)
 
 @client.command()
 async def getTheme(ctx):

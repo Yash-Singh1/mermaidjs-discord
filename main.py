@@ -65,19 +65,19 @@ async def support(ctx):
 @client.command()
 async def setTheme(ctx, theme = ''):
   if not(theme):
-    await ctx.send("A theme must be specified from one of default and dark for this command to work")
+    await ctx.message.reply("A theme must be specified from one of default and dark for this command to work")
   elif theme != "dark" and theme != "default":
-    await ctx.send("Theme must be \"default\" or \"dark\"")
+    await ctx.message.reply("Theme must be \"default\" or \"dark\"")
   else:
     db[ctx.message.author.mention + "#" + str(ctx.message.author.id)] = theme
-    await ctx.send("Theme successfully set to " + theme)
+    await ctx.message.reply("Theme successfully set to " + theme)
 
 @client.command()
 async def getTheme(ctx):
   if (ctx.message.author.mention + "#" + str(ctx.message.author.id)) in db.keys():
-    await ctx.send(db[ctx.message.author.mention + "#" + str(ctx.message.author.id)])
+    await ctx.message.reply(db[ctx.message.author.mention + "#" + str(ctx.message.author.id)])
   else:
-    await ctx.send("default")
+    await ctx.message.reply("default")
 
 keep_alive.keep_alive()
 

@@ -79,6 +79,15 @@ async def getTheme(ctx):
   else:
     await ctx.message.reply("default")
 
+@client.command()
+async def setStatus(ctx,arg='Online'):
+  try:
+    newStatus = discord.Status[arg]
+  except:
+    await ctx.message.reply("There was an error parsing the status")
+  else:
+    await client.change_presence(status=newStatus)
+
 keep_alive.keep_alive()
 
 client.run(os.environ['TOKEN'])

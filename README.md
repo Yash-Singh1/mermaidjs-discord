@@ -13,7 +13,7 @@ Type in `!mermaid-help` for help on how to use this bot.
 ## Running this bot locally
 ### Installation
 ---
-This installation asumes you have python3 installed on your machine and know how to use pip.
+This installation asumes you have `python3` installed on your machine and know how to use `pip`.
 
 Run the following in the project root directory to get all the dependencies
 >```bash
@@ -44,10 +44,10 @@ Make sure you make that bot private in that page.
 
 ### Adding your Bot
 ---
-On the side tab go to OAuth2>URL Generator
+1. On the side tab go to `OAuth2>URL Generator`.
 
-Under scopes, select bot
+2. Under scopes, select bot.
 
-Under permissions, select admin
+3. Under permissions, select admin.
 
-Use the generated URL to add it to your personal discord server to test out that your code is working correctly.
+4. Use the generated URL to add it to your personal discord server to test out that your code is working correctly.

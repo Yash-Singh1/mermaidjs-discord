@@ -23,7 +23,8 @@ __!mermaid-r__ or __!mermaid-render__: Renders the diagram with the code followi
 __!mermaid-invite__: Gets the invite link of the bot.\n\
 __!mermaid-support__: Gets a link to a support issue tracker for the bot.\n\
 __!mermaid-setTheme__: Sets the theme to use for the diagrams rendered for the user.\n\
-__!mermaid-getTheme__: Gets the currently set theme for the user.", inline=False)
+__!mermaid-getTheme__: Gets the currently set theme for the user.\n\
+__!mermaid-setStatus__: Sets the current status of the bot. One of `dnd` or `do_not_disturb`, `online`, `idle`, `offline`, or `invisible`.", inline=False)
   embed.add_field(name="Example Diagram", value="""
 ```markdown
 !mermaid-render
@@ -76,6 +77,15 @@ async def getTheme(ctx):
     await ctx.message.reply(db[ctx.message.author.mention + "#" + str(ctx.message.author.id)])
   else:
     await ctx.message.reply("default")
+
+@client.command()
+async def setStatus(ctx,arg='Online'):
+  try:
+    newStatus = discord.Status[arg]
+  except:
+    await ctx.message.reply("There was an error parsing the status")
+  else:
+    await client.change_presence(status=newStatus)
 
 keep_alive.keep_alive()
 

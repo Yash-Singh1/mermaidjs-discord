@@ -66,9 +66,7 @@ async def support(ctx):
 @client.command()
 async def setTheme(ctx, theme = ''):
   if not(theme):
-    await ctx.message.reply("A theme must be specified from one of default and dark for this command to work")
-  elif theme != "dark" and theme != "default":
-    await ctx.message.reply("Theme must be \"default\" or \"dark\"")
+    await ctx.message.reply("A theme must be specified for this command to work")
   else:
     db[ctx.message.author.mention + "#" + str(ctx.message.author.id)] = theme
     await ctx.message.reply("Theme successfully set to " + theme)
